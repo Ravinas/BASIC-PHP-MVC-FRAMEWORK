@@ -6,13 +6,10 @@ use App\Core\Application;
 
 $app = new Application();
 
-$app->router->get('/users',function (){
-    return 'Hello World';
+$app->router->get('/contact',function (){
+    echo 'Contact';
 });
 
-$app->router->get('/',function (){
-    return 'İndex';
-});
-
+$app->router->get('/','home');
 
 $app->run();

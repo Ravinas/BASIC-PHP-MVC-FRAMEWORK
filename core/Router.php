@@ -27,7 +27,23 @@ class Router
         //Gelen isteğin tipi
        $method = $this->request->getMethod();
         //İşenecek fonksiyon Closure
-       $callback = $this->routes[$method][$path];
-       echo  call_user_func($callback);
+       $callback = $this->routes[$method][$path] ?? false;
+       if (!$callback) {
+          echo '404 Not Found';
+          exit;
+       }
+       if (is_string($callback)) {
+          return $this->renderView($callback);
+       }
+       if (is_callable($callback)) {
+          return call_user_func($callback);
+       }
+
+
+    }
+
+    public function renderView($view)
+    {
+        include_once __DIR__."/../views/$view.php";
     }
 }

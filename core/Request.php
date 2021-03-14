@@ -8,7 +8,12 @@ class Request
 {
     public function getPath()
     {
-        $path = $_SERVER['REQUEST_URI'] ?? '/';
+        $path = $_SERVER['REQUEST_URI'] ?? false;
+        if ($path === false) {
+            echo '404 Not Found';
+            exit;
+        }
+
         $position = strpos($path,'?');
         if ($position === false)
         {
