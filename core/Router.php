@@ -2,8 +2,8 @@
 
 
 namespace App\Core;
+use App\Core\Application;
 use App\Core\Request;
-
 
 class Router
 {
@@ -44,6 +44,25 @@ class Router
 
     public function renderView($view)
     {
-        include_once __DIR__."/../views/$view.php";
+        //Layout HTML çıktısını cache'den aldık.
+        $layoutContent = $this->layoutContent();
+        //İçerik HTML çıktısını cache'den aldık.
+        $viewContent = $this->renderContent($view);
+        //Layout içinde belirttiğimiz content alanını view ile değiştiriyoruz.
+        return str_replace('{{content}}',$viewContent,$layoutContent);
+    }
+
+    protected function layoutContent()
+    {
+        ob_start();
+        include_once Application::$ROOT_DIR."/views/layouts/main.php";
+        return ob_get_clean();
+    }
+
+    protected function renderContent($view)
+    {
+        ob_start();
+        include_once Application::$ROOT_DIR."/views/$view.php";
+        return ob_get_clean();
     }
 }
