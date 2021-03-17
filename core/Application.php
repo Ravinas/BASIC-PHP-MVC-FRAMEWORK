@@ -8,11 +8,13 @@ class Application
     public static string $ROOT_DIR;
     public Router $router;
     public Request $request;
+    public Response $response;
     public function __construct($dirname)
     {
         self::$ROOT_DIR = $dirname;
+        $this->response = new Response();
         $this->request = new Request();
-        $this->router = new Router($this->request);
+        $this->router = new Router($this->request,$this->response);
     }
 
     public function run()
