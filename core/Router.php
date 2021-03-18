@@ -29,11 +29,8 @@ class Router
 
     public function resolve()
     {
-        //Bulunduğumuz URL
        $path =  $this->request->getPath();
-        //Gelen isteğin tipi
        $method = $this->request->getMethod();
-        //İşenecek fonksiyon Closure
        $callback = $this->routes[$method][$path] ?? false;
        if (!$callback) {
           $this->response->setStatusCode(404);
@@ -43,8 +40,17 @@ class Router
           return $this->renderView($callback);
        }
        if (is_callable($callback)) {
-          return call_user_func($callback);
+
+       //   return call_user_func($callback);
        }
+       if (is_array($callback))
+       {
+
+           $controller = new $callback[0];
+           $action = $callback[1];
+           return call_user_func([$controller,$action]);
+       }
+
 
 
     }
